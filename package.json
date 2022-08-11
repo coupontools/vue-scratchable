@@ -9,8 +9,7 @@
 	"private": false,
 	"main": "dist/vue-scratchable.umd.js",
 	"unpkg": "dist/vue-scratchable.umd.min.js",
-	"repository": "https://github.com/sebastianwachter/vue-scratchable",
-	"bugs": "https://github.com/sebastianwachter/vue-scratchable/issues",
+	"repository": "https://github.com/coupontools/vue-scratchable",
 	"keywords": [
 		"vue",
 		"scratch",
