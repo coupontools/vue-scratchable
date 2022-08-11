@@ -22,6 +22,7 @@
 		"dist"
 	],
 	"scripts": {
+		"prepare": "npm run build",
 		"serve": "vue-cli-service serve",
 		"build-docs": "vue-cli-service build --dest docs",
 		"build": "vue-cli-service build --target lib --name vue-scratchable ./src/components/vue-scratchable.vue && rimraf ./dist/demo.html",
