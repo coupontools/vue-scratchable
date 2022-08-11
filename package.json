@@ -1,77 +1,77 @@
 {
-  "name": "vue-scratchable",
-  "version": "0.3.3",
-  "description": "A Vue.js wrapper component that turns everything into fun scratch cards.",
-  "author": {
-    "name": "Sebastian Wachter",
-    "email": "sebastian.wachter@online.de"
-  },
-  "private": false,
-  "main": "dist/vue-scratchable.umd.js",
-  "unpkg": "dist/vue-scratchable.umd.min.js",
-  "repository": "https://github.com/sebastianwachter/vue-scratchable",
-  "bugs": "https://github.com/sebastianwachter/vue-scratchable/issues",
-  "keywords": [
-    "vue",
-    "scratch",
-    "card",
-    "scratchable",
-    "canvas"
-  ],
-  "license": "MIT",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest docs",
-    "build-bundle": "vue-cli-service build --target lib --name vue-scratchable ./src/components/vue-scratchable.vue && rimraf ./dist/demo.html",
-    "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
-    "core-js": "^3.6.5",
-    "lodash": "^4.17.20",
-    "vue": "^2.6.12"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.8",
-    "@vue/cli-plugin-eslint": "^4.5.7",
-    "@vue/cli-service": "^4.5.8",
-    "@vue/eslint-config-airbnb": "^5.0.2",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.12.1",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-vue": "^7.1.0",
-    "lint-staged": "^10.5.1",
-    "rimraf": "^3.0.2",
-    "vue-template-compiler": "^2.6.12"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/airbnb"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ],
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,jsx,vue}": [
-      "vue-cli-service lint",
-      "git add"
-    ]
-  }
+	"name": "vue-scratchable",
+	"version": "0.3.3",
+	"description": "A Vue.js wrapper component that turns everything into fun scratch cards.",
+	"author": {
+		"name": "Sebastian Wachter",
+		"email": "sebastian.wachter@online.de"
+	},
+	"private": false,
+	"main": "dist/vue-scratchable.umd.js",
+	"unpkg": "dist/vue-scratchable.umd.min.js",
+	"repository": "https://github.com/sebastianwachter/vue-scratchable",
+	"bugs": "https://github.com/sebastianwachter/vue-scratchable/issues",
+	"keywords": [
+		"vue",
+		"scratch",
+		"card",
+		"scratchable",
+		"canvas"
+	],
+	"license": "MIT",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"serve": "vue-cli-service serve",
+		"build": "vue-cli-service build --dest docs",
+		"build-bundle": "vue-cli-service build --target lib --name vue-scratchable ./src/components/vue-scratchable.vue && rimraf ./dist/demo.html",
+		"lint": "vue-cli-service lint"
+	},
+	"dependencies": {
+		"core-js": "^3.6.5",
+		"lodash": "^4.17.20",
+		"vue": "^2.6.12"
+	},
+	"devDependencies": {
+		"@vue/cli-plugin-babel": "^4.5.8",
+		"@vue/cli-plugin-eslint": "^4.5.7",
+		"@vue/cli-service": "^4.5.19",
+		"@vue/eslint-config-airbnb": "^5.0.2",
+		"babel-eslint": "^10.1.0",
+		"eslint": "^7.12.1",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-vue": "^7.1.0",
+		"lint-staged": "^10.5.1",
+		"rimraf": "^3.0.2",
+		"vue-template-compiler": "^2.6.12"
+	},
+	"eslintConfig": {
+		"root": true,
+		"env": {
+			"node": true
+		},
+		"extends": [
+			"plugin:vue/essential",
+			"eslint:recommended"
+		],
+		"parserOptions": {
+			"parser": "babel-eslint"
+		},
+		"rules": {}
+	},
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not dead"
+	],
+	"gitHooks": {
+		"pre-commit": "lint-staged"
+	},
+	"lint-staged": {
+		"*.{js,jsx,vue}": [
+			"vue-cli-service lint",
+			"git add"
+		]
+	}
 }
