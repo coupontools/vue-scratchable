@@ -3,8 +3,8 @@
 	"version": "0.3.3",
 	"description": "A Vue.js wrapper component that turns everything into fun scratch cards.",
 	"author": {
-		"name": "Sebastian Wachter",
-		"email": "sebastian.wachter@online.de"
+		"name": "Xtreme Internet Solutions",
+		"email": "dev@xis.be"
 	},
 	"private": false,
 	"main": "dist/vue-scratchable.umd.js",
