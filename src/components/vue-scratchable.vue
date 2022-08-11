@@ -15,6 +15,7 @@ import debounce from "lodash/debounce";
 
 export default {
 	name: "VueScratchable",
+	events: ["percentage-update"],
 	props: {
 		brushOptions: {
 			type: Object,

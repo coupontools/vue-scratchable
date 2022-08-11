@@ -63,10 +63,10 @@ This code is taken from this project's `App.vue` file to showcase the component'
     <h2>Scratch them free!</h2>
     <vue-scratchable
       v-slot="{ init }"
-      :brushOptions="brush"
-      :hideOptions="hide"
-      getPercentageCleared
-      @percentageUpdate="updatePoints"
+      :brush-options="brush"
+      :hide-options="hide"
+      get-percentage-cleared
+      @percentage-update="updatePoints"
     >
       <div class="wrapper">
         <img
@@ -165,7 +165,7 @@ a {
 |----------|------|-------------|
 | brushOptions | Object | Configuration object of the "scratcher". See below for possible options. |
 | hideOptions | Object | Configuration object of the scratchable layer. See below for possible options. |
-| getPercentageCleared | Boolean | Flag to enable the `percentageUpdate` event which emits the amount of cleared paint as percentage. |
+| getPercentageCleared | Boolean | Flag to enable the `percentage-update` event which emits the amount of cleared paint as percentage. |
 | percentageStride | Number | A stride used while calculating the cleared percentage to reduce calculation time. |
 
 #### 🖊️ Brush options
@@ -217,7 +217,7 @@ const hide = {
 
 | Event name | Parameter type | Description |
 |------------|----------------|-------------|
-| percentage-update | Number | If the `getPercentageCleared` flag is set the component will emit this event and pass a number calculated from the percentage amount of the cleared area. |
+| percentage-update | Number | If the `get-percentage-cleared` flag is set the component will emit this event and pass a number calculated from the percentage amount of the cleared area. |
 
 ## ✔️ Caveats
 
@@ -240,7 +240,7 @@ Example:
 
 The cleared area percentage calculation has to take every pixel of the canvas into consideration and analyzes whether they are cleared or not. Since this calculation gets called on every draw step this needs a lot of processing power. Because of that this feature is disabled by default and needs to be explicitly activated.
 
-That's also why the `percentageStride` property should be set wisely and adjusted to your needs. It defines how many pixels should be skipped while calculating. This obviously also decreases the percentage's value accuracy.
+That's also why the `percentage-stride` property should be set wisely and adjusted to your needs. It defines how many pixels should be skipped while calculating. This obviously also decreases the percentage's value accuracy.
 
 ## 🛠️ Contribution
 
