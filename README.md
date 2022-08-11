@@ -236,15 +236,7 @@ Example:
 </vue-scratchable>
 ```
 
-2. Using external images with patterns won't calculate percentage values.
-
-Patterns from external sources can't be used together with the percentage calculation. If done anyways it will resolve in the following CORS error:
-
-```
-Error in v-on handler: "SecurityError: Failed to execute 'getImageData' on 'CanvasRenderingContext2D': The canvas has been tainted by cross-origin data."
-```
-
-3. Percentage calculation is very taxing on performance
+2. Percentage calculation is very taxing on performance
 
 The cleared area percentage calculation has to take every pixel of the canvas into consideration and analyzes whether they are cleared or not. Since this calculation gets called on every draw step this needs a lot of processing power. Because of that this feature is disabled by default and needs to be explicitly activated.
 
