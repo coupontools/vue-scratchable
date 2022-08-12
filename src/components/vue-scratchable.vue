@@ -2,6 +2,7 @@
 	<div class="vue-scratchable-wrapper">
 		<slot :init="init"></slot>
 		<canvas
+			ref="canvas"
 			@mousedown="mouseDown"
 			@mousemove="mouseMove"
 			@touchstart="touchDown"
@@ -60,7 +61,7 @@ export default {
 		};
 	},
 	mounted() {
-		this.canvas = this.$el.querySelector("canvas");
+		this.canvas = this.$refs.canvas;
 		const debounceInit = debounce(() => this.init(), 200);
 
 		this.observer = new MutationObserver((mutations) => {
@@ -96,17 +97,27 @@ export default {
 	methods: {
 		init() {
 			this.initFlag = true;
-			this.setCanvasSizeAndContext();
-			this.$nextTick(() => this.fillArea());
+			this.context = this.canvas.getContext("2d");
+			this.$nextTick(() => {
+				this.fillArea()
+					.then(() => {
+						this.calculateClearedArea();
+						this.initFlag = false;
+					})
+					.catch((error) =>
+						console.error(` Failed to load image!
+							Error: ${error.name}
+							Message: ${error.message}
+						`)
+					);
+			});
 		},
 
-		setCanvasSizeAndContext() {
-			this.$nextTick(() => {
-				const { width, height } = this.$el.getBoundingClientRect();
-				this.canvas.width = Math.ceil(width);
-				this.canvas.height = Math.ceil(height);
-				this.context = this.canvas.getContext("2d");
-			});
+		setCanvasAndContextSize(height, width) {
+			this.context.height = height;
+			this.context.width = width;
+			this.canvas.height = height;
+			this.canvas.width = width;
 		},
 
 		setOffsets() {
@@ -116,19 +127,6 @@ export default {
 		},
 
 		async fillArea() {
-			const { width, height } = this.context.canvas;
-			await this.setFillStyle().catch((err) => {
-				// eslint-disable-next-line no-console
-				console.error(` Failed to load image!
-            Error: ${err.name}
-            Message: ${err.message}
-          `);
-			});
-			this.context.fillRect(0, 0, width, height);
-			this.initFlag = false;
-		},
-
-		setFillStyle() {
 			const {
 				type,
 				value = "",
@@ -137,25 +135,51 @@ export default {
 			} = this.hideOptions;
 			this.context.globalCompositeOperation = "source-over";
 
-			// eslint-disable-next-line no-return-assign
-			if (type === "color")
-				return new Promise((resolve) =>
-					resolve((this.context.fillStyle = value))
-				);
+			if (type === "color") {
+				// Height and width based on the elements in slot
+				return new Promise((resolve) => {
+					const { height, width } = this.$el.getBoundingClientRect();
+					this.setCanvasAndContextSize(height, width);
+					this.context.fillStyle = value;
+					this.context.fillRect(0, 0, width, height);
+					resolve();
+				});
+			} else {
+				return new Promise((resolve, reject) => {
+					const img = new Image();
+					img.onload = () => {
+						if (type === "image") {
+							// Height and width based on the loaded image
+							let { height, width } = img;
+							const elementWidth =
+								this.$el.getBoundingClientRect().width;
 
-			return new Promise((resolve, reject) => {
-				const img = new Image();
-				img.onload = () => {
-					this.context.fillStyle = this.context.createPattern(
-						img,
-						repeat
-					);
-					resolve(img);
-				};
-				img.onerror = (err) => reject(err);
-				img.src = src;
-				img.crossOrigin = "anonymous";
-			});
+							// Scale to take up the entire width of the element
+							height = Math.ceil(height * (elementWidth / width));
+							width = elementWidth;
+
+							this.setCanvasAndContextSize(height, width);
+							this.context.drawImage(img, 0, 0, width, height);
+							resolve();
+						} else {
+							// type === "repeat"
+							// Height and width based on the elements in slot
+							const { height, width } =
+								this.$el.getBoundingClientRect();
+							this.setCanvasAndContextSize(height, width);
+							this.context.fillStyle = this.context.createPattern(
+								img,
+								repeat
+							);
+							this.context.fillRect(0, 0, width, height);
+							resolve();
+						}
+					};
+					img.onerror = (error) => reject(error);
+					img.src = src;
+					img.crossOrigin = "anonymous";
+				});
+			}
 		},
 
 		clearArea() {

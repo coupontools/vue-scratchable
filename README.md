@@ -179,11 +179,11 @@ a {
 
 There are two different types of fill that can be applied to the scratchable area: a solid colour or a [canvas pattern](https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern). These are differentiated by the `type` property:
 
-##### 🟩 Solid colour
+##### 🟩 Hide option - Solid color
 
 | Property | Type | Description |
 |----------|------|-------------|
-| type | String | Can be 'color' or 'pattern'. If you want it to be a solid colour you should set it to 'color'. |
+| type | String | Can be 'color', 'pattern' or 'image'. If you want it to be a solid colour you should set it to 'color'. |
 | value | String | The colour you want for the fill. Can be any type of colour: hex or rgba. |
 
 Example:
@@ -195,11 +195,11 @@ const hide = {
 };
 ```
 
-##### 🏳️‍🌈 Pattern
+##### 🏳️‍🌈 Hide option - Pattern
 
 | Property | Type | Description |
 |----------|------|-------------|
-| type | String | Can be 'color' or 'pattern'. If you want it to be a pattern you should set it to 'pattern'. |
+| type | String | Can be 'color', 'pattern' or 'image'. If you want it to be a pattern you should set it to 'pattern'. |
 | src | String | A link to an image (best case is a repeatable texture). Can be an external Link as well as an imported local asset. |
 | repeat | String | Defines whether and in which direction the image should be repeated. Possible values are "repeat", "no-repeat", "repeat-x" and "repeat-y". |
 
@@ -210,6 +210,22 @@ const hide = {
   type: 'pattern',
   src: 'https://mdn.mozillademos.org/files/222/Canvas_createpattern.png',
   repeat: 'repeat',
+};
+```
+
+##### 🖼️ Hide option - Image
+
+| Property | Type | Description |
+|----------|------|-------------|
+| type | String | Can be 'color', 'pattern' or 'image'. If you want it to be a scaled image you should set it to 'image'. |
+| src | String | A link to an image. Can be an external Link as well as an imported local asset. |
+
+Example:
+
+```js
+const hide = {
+  type: 'image',
+  src: 'https://mdn.mozillademos.org/files/222/Canvas_createpattern.png',
 };
 ```
 

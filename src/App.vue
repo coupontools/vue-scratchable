@@ -3,6 +3,7 @@
 		<h1>A beautiful parrot got trapped behind some paper.</h1>
 		<h2>Scratch them free!</h2>
 		<vue-scratchable
+			ref="scratchable"
 			v-slot="{ init }"
 			:brushOptions="brush"
 			:hideOptions="hide"
@@ -20,6 +21,12 @@
 			</div>
 		</vue-scratchable>
 		<p>You scratched {{ percentage }}% free.</p>
+		<div>
+			<h2>Try some different types!</h2>
+			<button @click="hideType = 'color'">🟩 Color</button>
+			<button @click="hideType = 'pattern'">🏳️‍🌈 Pattern</button>
+			<button @click="hideType = 'image'">🖼️ Image</button>
+		</div>
 		<pre>Photo by <a href="https://unsplash.com/@tkirkgoz?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Mehmet Turgut Kirkgoz</a> on <a href="https://unsplash.com/t/animals?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></pre>
 	</div>
 </template>
@@ -40,11 +47,30 @@ export default {
 				}% left for me to be free... 🎉`
 				: "💚 Thank you for scratching me free! 💚";
 		},
+		hide() {
+			switch (this.hideType) {
+				case "image":
+					return this.imageHide;
+				case "pattern":
+					return this.patternHide;
+				default:
+					return this.colorHide;
+			}
+		},
 	},
 	data() {
 		return {
 			percentage: 0,
-			hide: {
+			hideType: "color",
+			colorHide: {
+				type: "color",
+				value: "#FFF00F",
+			},
+			imageHide: {
+				type: "image",
+				src: "https://hosting4images.com/clipart/scratch/front/scratchfront11.png",
+			},
+			patternHide: {
 				type: "pattern",
 				src: "https://hosting4images.com/clipart/scratch/front/scratchfront11.png",
 				repeat: "repeat",
@@ -58,6 +84,11 @@ export default {
 	methods: {
 		updatePoints(percentage) {
 			this.percentage = percentage;
+		},
+	},
+	watch: {
+		hideType: function () {
+			this.$refs.scratchable.init();
 		},
 	},
 };
@@ -91,5 +122,12 @@ h3 {
 
 a {
 	color: #2196f3;
+}
+
+button {
+	height: 3em;
+	width: 7em;
+	display: inline;
+	margin: 0 0.5em 0.5em 0.5em;
 }
 </style>
