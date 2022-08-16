@@ -264,5 +264,6 @@ export default {
 	right: 0;
 	bottom: 0;
 	z-index: 0;
+	margin-bottom: 6px;
 }
 </style>
