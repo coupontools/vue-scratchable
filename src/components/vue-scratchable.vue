@@ -1,13 +1,16 @@
 <template>
-	<div class="vue-scratchable-wrapper">
-		<slot :init="init"></slot>
+	<div class="vue-scratchable">
 		<canvas
+			class="vue-scratchable__cover"
 			ref="canvas"
 			@mousedown="mouseDown"
 			@mousemove="mouseMove"
 			@touchstart="touchDown"
 			@touchmove="touchMove"
 		/>
+		<div class="vue-scratchable__slot-wrapper">
+			<slot :init="init"></slot>
+		</div>
 	</div>
 </template>
 
@@ -28,8 +31,8 @@ export default {
 		hideOptions: {
 			type: Object,
 			default: () => ({
-				type: "color",
-				value: "#dadada",
+				type: "image",
+				value: "https://hosting4images.com/clipart/scratch/front/scratchfront11.png",
 			}),
 		},
 		getPercentageCleared: {
@@ -127,59 +130,28 @@ export default {
 		},
 
 		async fillArea() {
-			const {
-				type,
-				value = "",
-				src = "",
-				repeat = "",
-			} = this.hideOptions;
+			const { src = "" } = this.hideOptions;
 			this.context.globalCompositeOperation = "source-over";
 
-			if (type === "color") {
-				// Height and width based on the elements in slot
-				return new Promise((resolve) => {
-					const { height, width } = this.$el.getBoundingClientRect();
+			return new Promise((resolve, reject) => {
+				const img = new Image();
+				img.onload = () => {
+					// Height and width based on the loaded image
+					let { height, width } = img;
+					const elementWidth = this.$el.getBoundingClientRect().width;
+
+					// Scale to take up the entire width of the element
+					height = Math.ceil(height * (elementWidth / width));
+					width = elementWidth;
+
 					this.setCanvasAndContextSize(height, width);
-					this.context.fillStyle = value;
-					this.context.fillRect(0, 0, width, height);
+					this.context.drawImage(img, 0, 0, width, height);
 					resolve();
-				});
-			} else {
-				return new Promise((resolve, reject) => {
-					const img = new Image();
-					img.onload = () => {
-						if (type === "image") {
-							// Height and width based on the loaded image
-							let { height, width } = img;
-							const elementWidth =
-								this.$el.getBoundingClientRect().width;
-
-							// Scale to take up the entire width of the element
-							height = Math.ceil(height * (elementWidth / width));
-							width = elementWidth;
-
-							this.setCanvasAndContextSize(height, width);
-							this.context.drawImage(img, 0, 0, width, height);
-							resolve();
-						} else {
-							// type === "repeat"
-							// Height and width based on the elements in slot
-							const { height, width } =
-								this.$el.getBoundingClientRect();
-							this.setCanvasAndContextSize(height, width);
-							this.context.fillStyle = this.context.createPattern(
-								img,
-								repeat
-							);
-							this.context.fillRect(0, 0, width, height);
-							resolve();
-						}
-					};
-					img.onerror = (error) => reject(error);
-					img.src = src;
-					img.crossOrigin = "anonymous";
-				});
-			}
+				};
+				img.onerror = (error) => reject(error);
+				img.src = src;
+				img.crossOrigin = "anonymous";
+			});
 		},
 
 		clearArea() {
@@ -272,17 +244,25 @@ export default {
 </script>
 
 <style scoped>
-.vue-scratchable-wrapper {
+.vue-scratchable {
 	position: relative;
 }
 
-.vue-scratchable-wrapper > * {
+.vue-scratchable > * {
 	user-select: none;
 }
 
-canvas {
+.vue-scratchable__cover {
+	position: relative;
+	z-index: 1;
+}
+
+.vue-scratchable__slot-wrapper {
 	position: absolute;
 	top: 0;
 	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 0;
 }
 </style>

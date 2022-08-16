@@ -2,31 +2,29 @@
 	<div id="app">
 		<h1>A beautiful parrot got trapped behind some paper.</h1>
 		<h2>Scratch them free!</h2>
-		<vue-scratchable
-			ref="scratchable"
-			v-slot="{ init }"
-			:brushOptions="brush"
-			:hideOptions="hide"
-			getPercentageCleared
-			@percentage-update="updatePoints"
-		>
-			<div class="wrapper">
-				<img
-					:src="
-						require('./assets/mehmet-turgut-kirkgoz-vnayhPykN5Q-unsplash.jpg')
-					"
-					@load="init()"
-				/>
-				<h3>{{ subline }}</h3>
-			</div>
-		</vue-scratchable>
-		<p>You scratched {{ percentage }}% free.</p>
-		<div>
-			<h2>Try some different types!</h2>
-			<button @click="hideType = 'color'">🟩 Color</button>
-			<button @click="hideType = 'pattern'">🏳️‍🌈 Pattern</button>
-			<button @click="hideType = 'image'">🖼️ Image</button>
+
+		<div class="wrapper">
+			<vue-scratchable
+				ref="scratchable"
+				v-slot="{ init }"
+				:brushOptions="brush"
+				:hideOptions="hide"
+				getPercentageCleared
+				@percentage-update="updatePoints"
+			>
+				<div class="inner-wrapper">
+					<img
+						:src="
+							require('./assets/mehmet-turgut-kirkgoz-vnayhPykN5Q-unsplash.jpg')
+						"
+						@load="init()"
+						style="height: 200px"
+					/>
+					<h3>{{ subline }}</h3>
+				</div>
+			</vue-scratchable>
 		</div>
+		<p>You scratched {{ percentage }}% free.</p>
 		<pre>Photo by <a href="https://unsplash.com/@tkirkgoz?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Mehmet Turgut Kirkgoz</a> on <a href="https://unsplash.com/t/animals?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></pre>
 	</div>
 </template>
@@ -44,36 +42,17 @@ export default {
 			return this.percentage < 100
 				? `🎉 There is still ${
 						100 - this.percentage
-				}% left for me to be free... 🎉`
+						// eslint-disable-next-line no-mixed-spaces-and-tabs
+				  }% left for me to be free... 🎉`
 				: "💚 Thank you for scratching me free! 💚";
-		},
-		hide() {
-			switch (this.hideType) {
-				case "image":
-					return this.imageHide;
-				case "pattern":
-					return this.patternHide;
-				default:
-					return this.colorHide;
-			}
 		},
 	},
 	data() {
 		return {
 			percentage: 0,
-			hideType: "color",
-			colorHide: {
-				type: "color",
-				value: "#FFF00F",
-			},
-			imageHide: {
+			hide: {
 				type: "image",
 				src: "https://hosting4images.com/clipart/scratch/front/scratchfront11.png",
-			},
-			patternHide: {
-				type: "pattern",
-				src: "https://hosting4images.com/clipart/scratch/front/scratchfront11.png",
-				repeat: "repeat",
 			},
 			brush: {
 				size: 60,
@@ -84,11 +63,6 @@ export default {
 	methods: {
 		updatePoints(percentage) {
 			this.percentage = percentage;
-		},
-	},
-	watch: {
-		hideType: function () {
-			this.$refs.scratchable.init();
 		},
 	},
 };
@@ -111,8 +85,19 @@ body {
 	margin-top: 50px;
 }
 
-.vue-scratchable-wrapper {
+.wrapper {
+	width: 90%;
+	max-width: 400px;
+}
+.inner-wrapper {
 	background-color: white;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
 }
 
 h3 {
