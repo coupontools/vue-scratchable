@@ -246,6 +246,7 @@ export default {
 <style scoped>
 .vue-scratchable {
 	position: relative;
+	line-height: 0;
 }
 
 .vue-scratchable > * {
@@ -262,7 +263,8 @@ export default {
 	top: 0;
 	left: 0;
 	right: 0;
-	bottom: 6px;
+	bottom: 0;
 	z-index: 0;
+	line-height: 1;
 }
 </style>
