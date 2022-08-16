@@ -52,7 +52,7 @@ export default {
 			percentage: 0,
 			hide: {
 				type: "image",
-				src: "https://hosting4images.com/clipart/scratch/front/scratchfront11.png",
+				src: "https://images-coupontools.s3.eu-central-1.amazonaws.com/coupon/13170/cover_62f3cc98efcc6.png",
 			},
 			brush: {
 				size: 60,

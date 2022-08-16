@@ -8,15 +8,13 @@
 			@touchstart="touchDown"
 			@touchmove="touchMove"
 		/>
-		<div class="vue-scratchable__slot-wrapper">
+		<div class="vue-scratchable__slot-wrapper" v-show="coverLoaded">
 			<slot :init="init"></slot>
 		</div>
 	</div>
 </template>
 
 <script>
-import debounce from "lodash/debounce";
-
 export default {
 	name: "VueScratchable",
 	events: ["percentage-update"],
@@ -46,6 +44,7 @@ export default {
 	},
 	data() {
 		return {
+			coverLoaded: false,
 			canvas: null,
 			context: null,
 			isPressed: false,
@@ -59,53 +58,30 @@ export default {
 				lastX: 0,
 				lastY: 0,
 			},
-			observer: null,
-			initFlag: false,
 		};
 	},
 	mounted() {
 		this.canvas = this.$refs.canvas;
-		const debounceInit = debounce(() => this.init(), 200);
-
-		this.observer = new MutationObserver((mutations) => {
-			mutations.forEach(({ attributeName }) => {
-				if (this.initFlag || !attributeName) return;
-				debounceInit();
-			});
-		});
-		this.observer.observe(this.$el, {
-			childList: true,
-			attributes: true,
-			characterData: true,
-			subtree: true,
-		});
 
 		window.addEventListener("mouseup", this.mouseUp, false);
 		window.addEventListener("touchend", this.touchUp, false);
 		window.addEventListener("touchcancel", this.touchUp, false);
 
 		this.init();
-
-		window.addEventListener("resize", debounce(this.init, 500));
 	},
 	destroyed() {
 		window.removeEventListener("mouseup", this.mouseUp);
 		window.removeEventListener("touchend", this.touchUp);
 		window.removeEventListener("touchcancel", this.touchUp);
-
-		window.removeEventListener("resize", debounce(this.init, 500));
-
-		this.observer.disconnect();
 	},
 	methods: {
 		init() {
-			this.initFlag = true;
 			this.context = this.canvas.getContext("2d");
+			this.setCanvasAndContextSize(0, 0);
 			this.$nextTick(() => {
 				this.fillArea()
 					.then(() => {
 						this.calculateClearedArea();
-						this.initFlag = false;
 					})
 					.catch((error) =>
 						console.error(` Failed to load image!
@@ -117,10 +93,10 @@ export default {
 		},
 
 		setCanvasAndContextSize(height, width) {
-			this.context.height = height;
-			this.context.width = width;
 			this.canvas.height = height;
 			this.canvas.width = width;
+			this.context.height = height;
+			this.context.width = width;
 		},
 
 		setOffsets() {
@@ -146,11 +122,14 @@ export default {
 
 					this.setCanvasAndContextSize(height, width);
 					this.context.drawImage(img, 0, 0, width, height);
+
+					this.coverLoaded = true;
 					resolve();
 				};
 				img.onerror = (error) => reject(error);
 				img.src = src;
 				img.crossOrigin = "anonymous";
+				this.coverLoaded = false;
 			});
 		},
 
