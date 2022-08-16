@@ -110,7 +110,12 @@ Example:
 </vue-scratchable>
 ```
 
-2. Percentage calculation is very taxing on performance
+2. Image hide option with cross domain source throwing SecurityError
+
+Enabling CORS will fix this issue, this is needed due to security concerns.
+
+
+3. Percentage calculation is very taxing on performance
 
 The cleared area percentage calculation has to take every pixel of the canvas into consideration and analyzes whether they are cleared or not. Since this calculation gets called on every draw step this needs a lot of processing power. Because of that this feature is disabled by default and needs to be explicitly activated.
 
