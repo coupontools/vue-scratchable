@@ -262,8 +262,7 @@ export default {
 	top: 0;
 	left: 0;
 	right: 0;
-	bottom: 0;
+	bottom: 6px;
 	z-index: 0;
-	margin-bottom: 6px;
 }
 </style>
