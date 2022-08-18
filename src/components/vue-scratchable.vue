@@ -17,7 +17,7 @@
 <script>
 export default {
 	name: "VueScratchable",
-	events: ["percentage-update"],
+	events: ["initial-load", "percentage-update"],
 	props: {
 		brushOptions: {
 			type: Object,
@@ -58,6 +58,7 @@ export default {
 				lastX: 0,
 				lastY: 0,
 			},
+			initialized: false,
 		};
 	},
 	mounted() {
@@ -82,6 +83,10 @@ export default {
 				this.fillArea()
 					.then(() => {
 						this.calculateClearedArea();
+						if(!this.initialized){
+							this.$emit("initial-load");
+							this.initialized = true;
+						}
 					})
 					.catch((error) =>
 						console.error(` Failed to load image!

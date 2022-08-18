@@ -11,6 +11,7 @@
 				:hideOptions="hide"
 				getPercentageCleared
 				@percentage-update="updatePoints"
+				@initial-load="onLoad"
 			>
 				<div class="inner-wrapper">
 					<img
@@ -52,7 +53,7 @@ export default {
 			percentage: 0,
 			hide: {
 				type: "image",
-				src: "https://images-coupontools.s3.eu-central-1.amazonaws.com/coupon/13170/cover_62f3cc98efcc6.png",
+				src: "https://digicpn.com/scratch/templates/scratch1.png",
 			},
 			brush: {
 				size: 60,
@@ -63,6 +64,9 @@ export default {
 	methods: {
 		updatePoints(percentage) {
 			this.percentage = percentage;
+		},
+		onLoad() {
+			console.log("loaded");
 		},
 	},
 };
